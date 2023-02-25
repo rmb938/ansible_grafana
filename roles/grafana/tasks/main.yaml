@@ -1,0 +1,45 @@
+- name: Install Grafana
+  ansible.builtin.package:
+    name:
+      - www/grafana9
+    state: present
+
+- name: MAKE GRAFANA SSL DIRECTORY
+  file:
+    path: /var/ssl/grafana/
+    state: directory
+
+- name: "CERT SCRIPT"
+  ansible.builtin.template:
+    src: ./var/ssl/grafana/cert.sh
+    dest: /var/ssl/grafana/cert.sh
+    owner: root
+    group: wheel
+    mode: 0774
+
+- name: GRAFANA SSL CRON
+  ansible.builtin.cron:
+    name: "grafana ssl"
+    special_time: "weekly"
+    job: "/var/ssl/grafana/cert.sh"
+
+- name: GENERATE CERTIFICATES FOR FIRST TIME
+  ansible.builtin.command: "/var/ssl/grafana/cert.sh"
+  args:
+    creates: /var/ssl/grafana/tls.crt
+
+- name: GRAFANA CONFIGURATION
+  ansible.builtin.template:
+    src: ./usr/local/etc/grafana/grafana.ini
+    dest: /usr/local/etc/grafana/grafana.ini
+    owner: root
+    group: wheel
+    mode: 0644
+  register: grafana_configuration
+
+- name: Enable and start Grafana
+  ansible.builtin.service:
+    name: grafana
+    state: restarted
+    enabled: true
+  when: grafana_configuration.changed

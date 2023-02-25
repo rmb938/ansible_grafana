@@ -1,0 +1,6 @@
+- name: Grafana
+  hosts: grafana
+  remote_user: ansible
+  become: true
+  roles:
+    - grafana

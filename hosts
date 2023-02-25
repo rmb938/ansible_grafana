@@ -1,0 +1,5 @@
+[grafana]
+grafana.tailnet-047c.ts.net
+
+[prometheus]
+grafana.tailnet-047c.ts.net
