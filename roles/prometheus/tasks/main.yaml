@@ -1,0 +1,31 @@
+- name: Install Prometheus
+  ansible.builtin.package:
+    name:
+      - net-mgmt/prometheus2
+    state: present
+
+- name: TAILSCALE SERVE PROMETHEUS
+  ansible.builtin.command: "/usr/local/bin/tailscale serve /prometheus/ proxy 9090"
+  changed_when: false
+
+- name: Prometheus prometheus_args
+  community.general.sysrc:
+    name: prometheus_args
+    value: "--web.listen-address='127.0.0.1:9090' --web.external-url='/prometheus/' --web.route-prefix='/prometheus/' --web.enable-remote-write-receiver --web.enable-lifecycle --storage.tsdb.retention.size=100GB --storage.tsdb.max-block-duration=2h --storage.tsdb.min-block-duration=2h"
+  register: promethues_sysrc
+
+- name: PROMETHEUS CONFIGURATION
+  ansible.builtin.template:
+    src: ./usr/local/etc/prometheus.yml
+    dest: /usr/local/etc/prometheus.yml
+    owner: root
+    group: wheel
+    mode: 0644
+  register: prometheus_configuration
+
+- name: Enable and start Prometheus
+  ansible.builtin.service:
+    name: prometheus
+    state: restarted
+    enabled: true
+  when: prometheus_configuration.changed or promethues_sysrc.changed

@@ -4,3 +4,10 @@
   become: true
   roles:
     - grafana
+
+- name: Prometheus
+  hosts: prometheus
+  remote_user: ansible
+  become: true
+  roles:
+    - prometheus
