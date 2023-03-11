@@ -45,3 +45,11 @@ scrape_configs:
         labels:
           prometheus: global
           prometheus_replica: "0"
+
+  - job_name: "mysqld-exporter"
+    static_configs:
+      - targets:
+          - "openstack-mysql.tailnet-047c.ts.net:9104"
+        labels:
+          prometheus: global
+          prometheus_replica: "0"
