@@ -54,3 +54,11 @@ scrape_configs:
         labels:
           prometheus: global
           prometheus_replica: "0"
+
+  - job_name: "rabbitmq-server"
+    static_configs:
+      - targets:
+          - "pi1.tailnet-047c.ts.net:15692"
+        labels:
+          prometheus: global
+          prometheus_replica: "0"
