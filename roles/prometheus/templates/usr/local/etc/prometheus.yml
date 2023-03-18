@@ -38,6 +38,11 @@ scrape_configs:
     static_configs:
       - targets:
           - "openstack-mysql.tailnet-047c.ts.net:9100"
+          - "openstack-rabbitmq.tailnet-047c.ts.net:9100"
+          - "openstack-keystone.tailnet-047c.ts.net:9100"
+          - "openstack-cinder.tailnet-047c.ts.net:9100"
+          - "openstack-glance.tailnet-047c.ts.net:9100"
+          - "openstack-nova.tailnet-047c.ts.net:9100"
           - "pi1.tailnet-047c.ts.net:9100"
           - "pi2.tailnet-047c.ts.net:9100"
           - "pi3.tailnet-047c.ts.net:9100"
@@ -58,7 +63,7 @@ scrape_configs:
   - job_name: "rabbitmq-server"
     static_configs:
       - targets:
-          - "pi1.tailnet-047c.ts.net:15692"
+          - "openstack-rabbitmq.tailnet-047c.ts.net:15692"
         labels:
           prometheus: global
           prometheus_replica: "0"
