@@ -9,8 +9,8 @@ This runs in a TrueNAS Jail
 ```bash
 pkg install -y security/sudo lang/python3 devel/py-pip
 pw user add -n ansible -d /home/ansible -m -s /bin/sh
-echo '%wheel ALL=(ALL) ALL' > /usr/local/etc/sudoers.d/wheel
-echo "ansible ALL=(ALL) NOPASSWD: ALL" > /usr/local/etc/sudoers.d/ansible
+echo '%wheel ALL=(ALL) ALL' > /usr/local/etc/sudoers.d/00_wheel
+echo "ansible ALL=(ALL) NOPASSWD: ALL" > /usr/local/etc/sudoers.d/01_ansible
 ```
 * Tailscale
 ```bash
